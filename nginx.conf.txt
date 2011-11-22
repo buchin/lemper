@@ -1,0 +1,46 @@
+user www-data;
+worker_processes 4;
+pid /var/run/nginx.pid;
+ 
+events {
+    worker_connections 1024;
+    # multi_accept on;
+}
+ 
+http {
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    server_tokens off;
+    include mime.types;
+    default_type  application/octet-stream;
+    index index.php index.htm index.html redirect.php;
+ 
+    #Gzip
+    gzip  on;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_disable "MSIE [1-6].(?!.*SV1)";
+    gzip_types text/plain text/css application/json application/x-javascript text/xml
+                        application/xml application/xml+rss text/javascript;
+ 
+    #FastCGI
+    fastcgi_intercept_errors on;
+    fastcgi_ignore_client_abort on;
+    fastcgi_buffers 8 16k;
+    fastcgi_buffer_size 32k;
+    fastcgi_read_timeout 120;
+    fastcgi_index  index.php;
+ 
+    limit_req_zone $binary_remote_addr zone=one:10m rate=1r/s;
+ 
+    ##
+    # Virtual Host Configs
+    ##
+ 
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;  #Our individual site vhost server files will live here
+}

@@ -1,0 +1,49 @@
+[client]
+port        = 3306
+socket      = /var/run/mysqld/mysqld.sock
+ 
+[mysqld_safe]
+socket      = /var/run/mysqld/mysqld.sock
+nice        = 0
+ 
+[mysqld]
+user        = mysql
+pid-file    = /var/run/mysqld/mysqld.pid
+socket      = /var/run/mysqld/mysqld.sock
+port        = 3306
+basedir     = /usr
+datadir     = /var/lib/mysql
+tmpdir      = /tmp
+language    = /usr/share/mysql/english
+skip-external-locking
+key_buffer  = mysql_key_bufferM
+max_allowed_packet  = mysql_max_allowed_packetM
+thread_stack        = 192K
+thread_cache_size   = 16
+myisam-recover      = BACKUP
+max_connections     = 100
+table_cache         = 256
+thread_concurrency  = 16
+query_cache_limit   = 4M
+query_cache_size    = mysql_query_cache_sizeM
+general_log_file    = /var/log/mysql/mysql.log
+general_log         = 1
+log_slow_queries    = /var/log/mysql/mysql-slow.log
+long_query_time = 2
+log-queries-not-using-indexes
+ 
+expire_logs_days    = 10
+max_binlog_size     = 100M
+ 
+[mysqldump]
+quick
+quote-names
+max_allowed_packet   = mysql_max_allowed_packetM
+ 
+[isamchk]
+key_buffer      = mysql_key_bufferM
+ 
+# * IMPORTANT: Additional settings that can override those from this file!
+#   The files must end with '.cnf', otherwise they'll be ignored.
+#
+!includedir /etc/mysql/conf.d/
