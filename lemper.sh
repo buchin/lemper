@@ -10,6 +10,7 @@ echo "deb-src http://packages.dotdeb.org stable all" >> /etc/apt/sources.list
 echo "getting gpg key"
 wget http://www.dotdeb.org/dotdeb.gpg
 cat dotdeb.gpg | apt-key add -
+apt-get update
 
 echo "Install Nginx, PHP-FPM, MySQL, APC"
 apt-get install nginx-full php5-fpm php5 mysql-server php5-apc php5-mysql php5-xsl php5-xmlrpc php5-sqlite php5-snmp php5-curl
