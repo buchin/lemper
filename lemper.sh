@@ -29,6 +29,11 @@ sed "s/apc_shm_size/$apc_shm_size/g" apc.ini.txt > apc.ini
 echo "moving apc.ini"
 mv -f apc.ini /etc/php5/conf.d/apc.ini
 
+echo "moving nginx.conf"
+cp nginx.conf.txt nginx.conf
+mv -f nginx.conf /etc/nginx/nginx.conf
+
+
 echo "appending mysql extension to php.ini"
 echo "extension = mysql.so" >> /etc/php5/fpm/php.ini
 echo "extension_dir = /usr/lib/php5/20090626+lfs/" >> /etc/php5/fpm/php.ini
