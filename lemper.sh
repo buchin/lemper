@@ -36,7 +36,14 @@ mv -f nginx.conf /etc/nginx/nginx.conf
 
 echo "appending mysql extension to php.ini"
 echo "extension = mysql.so" >> /etc/php5/fpm/php.ini
-echo "extension_dir = /usr/lib/php5/20090626+lfs/" >> /etc/php5/fpm/php.ini
+
+if [ -d "/usr/lib/php5/20090626+lfs/" ]; then
+	echo "extension_dir = /usr/lib/php5/20090626+lfs/" >> /etc/php5/fpm/php.ini
+fi
+if [ -d "/usr/lib/php5/20090626/" ]; then
+	echo "extension_dir = /usr/lib/php5/20090626/" >> /etc/php5/fpm/php.ini
+fi
+
 
 echo "moving my.cnf"
 mv -f my.cnf /etc/mysql/my.cnf
