@@ -13,7 +13,7 @@ cat dotdeb.gpg | apt-key add -
 apt-get update
 
 echo "Install Nginx, PHP-FPM, MySQL, APC"
-apt-get install nginx-full php5-fpm php5 mysql-server php5-apc php5-mysql php5-xsl php5-xmlrpc php5-sqlite php5-snmp php5-curl zip unzip
+apt-get install nginx-full php5-fpm php5 mysql-server php5-apc php5-mysql php5-xsl php5-xmlrpc php5-sqlite php5-snmp php5-curl zip unzip git
 
 echo "calculating apc settings value"
 apc_shm_size=$(perl -e "print 512/1024*$ram")
