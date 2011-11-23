@@ -16,16 +16,16 @@ echo "Install Nginx, PHP-FPM, MySQL, APC"
 apt-get install nginx-full php5-fpm php5 mysql-server php5-apc php5-mysql php5-xsl php5-xmlrpc php5-sqlite php5-snmp php5-curl zip unzip
 
 echo "calculating apc settings value"
-apc_shm_size=$(perl -e "print 512/1024*$ram")
+apc_shm_size=$(perl -e "print 512/1024*${ram}")
 echo "calculating mysql settings value"
-mysql_key_buffer=$(perl -e "print 16/1024*$ram")
-mysql_max_allowed_packet=$mysql_key_buffer
-mysql_query_cache_size=$(perl -e "print 128/1024*$ram")
+mysql_key_buffer=$(perl -e "print 16/1024*${ram}")
+mysql_max_allowed_packet=${mysql_key_buffer}
+mysql_query_cache_size=$(perl -e "print 128/1024*${ram}")
 
 echo "creating my.cnf"
-sed "s/mysql_key_buffer/$mysql_key_buffer/g" my.cnf.txt | sed "s/mysql_query_cache_size/$mysql_query_cache_size/g" | sed "s/mysql_max_allowed_packet/$mysql_max_allowed_packet/g" > my.cnf
+sed 's/mysql_key_buffer/'${mysql_key_buffer}'/g;s/mysql_query_cache_size/'${mysql_query_cache_size}'/g;s/mysql_max_allowed_packet/'${mysql_max_allowed_packet}'/g' my.cnf.txt  > my.cnf
 echo "creating apc.ini"
-sed "s/apc_shm_size/$apc_shm_size/g" apc.ini.txt > apc.ini
+sed 's/apc_shm_size/'${apc_shm_size}'/g' apc.ini.txt > apc.ini
 echo "moving apc.ini"
 mv -f apc.ini /etc/php5/conf.d/apc.ini
 
