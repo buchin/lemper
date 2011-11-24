@@ -48,9 +48,13 @@ fi
 echo "moving my.cnf"
 mv -f my.cnf /etc/mysql/my.cnf
 
+echo "moving varnish"
+mv -f default.vcl /etc/varnish/default.vcl
+
 echo "restarting services"
 /etc/init.d/nginx start
 /etc/init.d/mysql restart
 /etc/init.d/php5-fpm restart
+/etc/init.d/varnish restart
 
 echo "LEMPER script finished"
