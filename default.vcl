@@ -1,12 +1,4 @@
-#
-# Varnish 3 configuration for Wordpress
-#
-# On Debian OS:  /etc/varnish/default.vcl
-#
-# Nicolas Hennion (aka) Nicolargo
-#
-
-# Set the default backend (Nginx server for me)
+# Set the default backend (Nginx)
 backend default {
 	# My Nginx server listen on IP address 127.0.0.1 and TCP port 8080
 	.host = "127.0.0.1";
@@ -24,7 +16,6 @@ acl purge {
 }
 
 # This function is used when a request is send by a HTTP client (Browser) 
-# !!! Replace: blog.nicolargo.com by your own URL !!!
 sub vcl_recv {
 	set req.backend = default; 
 
@@ -56,45 +47,11 @@ sub vcl_recv {
 	}
 
 	# --- Wordpress specific configuration
-
-    # Did not cache the RSS feed
-    if (req.url ~ "/feed") {
-        return (pass);
-    }
-		
-	# Did not cache the admin and login pages
-	if (req.url ~ "/wp-(login|admin)") {
-		return (pass);
-	}
-
-	# Remove the "has_js" cookie
-	set req.http.Cookie = regsuball(req.http.Cookie, "has_js=[^;]+(; )?", "");
-
-	# Remove any Google Analytics based cookies
-	set req.http.Cookie = regsuball(req.http.Cookie, "__utm.=[^;]+(; )?", "");
-
-	# Remove the Quant Capital cookies (added by some plugin, all __qca)
-	set req.http.Cookie = regsuball(req.http.Cookie, "__qc.=[^;]+(; )?", "");
-
-	# Remove the wp-settings-1 cookie
-	set req.http.Cookie = regsuball(req.http.Cookie, "wp-settings-1=[^;]+(; )?", "");
-
-	# Remove the wp-settings-time-1 cookie
-	set req.http.Cookie = regsuball(req.http.Cookie, "wp-settings-time-1=[^;]+(; )?", "");
-
-	# Remove the wp test cookie
-	set req.http.Cookie = regsuball(req.http.Cookie, "wordpress_test_cookie=[^;]+(; )?", "");
-
-	# Are there cookies left with only spaces or that are empty?
-	if (req.http.cookie ~ "^ *$") {
-		    unset req.http.cookie;
-	}
 	
-	# Cache the following files extensions 
-	if (req.url ~ "\.(css|js|png|gif|jp(e)?g)") {
-		unset req.http.cookie;
+	# Did not cache the admin and login pages
+	if ( !( req.url ~ "/wp-(login|admin)") ) {
+	  unset req.http.Cookie;
 	}
-
 	# Normalize Accept-Encoding header and compression
 	# https://www.varnish-cache.org/docs/3.0/tutorial/vary.html
 	if (req.http.Accept-Encoding) {
@@ -110,21 +67,8 @@ sub vcl_recv {
 		}
 	}
 
-	# Check the cookies for wordpress-specific items
-	if (req.http.Cookie ~ "wordpress_" || req.http.Cookie ~ "comment_") {
-		return (pass);
-	}
-	if (!req.http.cookie) {
-		unset req.http.cookie;
-	}
 	
 	# --- End of Wordpress specific configuration
-
-	# Did not cache HTTP authentication and HTTP Cookie
-	if (req.http.Authorization || req.http.Cookie) {
-		# Not cacheable by default
-		return (pass);
-	}
 	
 	# Cache all others requests
 	return (lookup);
