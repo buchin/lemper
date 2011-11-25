@@ -127,7 +127,7 @@ sub vcl_fetch {
 	}
 
 	# A TTL of 30 minutes
-	set beresp.ttl = 1800s;
+	set beresp.ttl = 30d;
 	
 	return (deliver);
 }
