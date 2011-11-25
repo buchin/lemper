@@ -55,6 +55,7 @@ echo "restarting services"
 /etc/init.d/nginx start
 /etc/init.d/mysql restart
 /etc/init.d/php5-fpm restart
-/etc/init.d/varnish restart
+pkill varnishd
+varnishd -f /etc/varnish/default.vcl -s file,7G -T 127.0.0.1:2000
 
 echo "LEMPER script finished"
