@@ -2,6 +2,13 @@
 
 echo "how much MB RAM do you have?"
 read ram
+echo "where do you want varnish to store its cache (malloc or file)?"
+read varnish_cache_location
+
+echo "please specify varnish cache size (1G, etc)?"
+read varnish_cache_size
+
+read ram
 echo "updating apt source"
 apt-get update
 echo "adding dotdeb repo"
@@ -30,6 +37,9 @@ echo "creating my.cnf"
 sed 's/mysql_key_buffer/'${mysql_key_buffer}'/g;s/mysql_query_cache_size/'${mysql_query_cache_size}'/g;s/mysql_max_allowed_packet/'${mysql_max_allowed_packet}'/g' my.cnf.txt  > my.cnf
 echo "creating apc.ini"
 sed 's/apc_shm_size/'${apc_shm_size}'/g' apc.ini.txt > apc.ini
+echo "creating varnish default command"
+sed 's/varnish_cache_location/'${varnish_cache_location}'/g;s/varnish_cache_size/'${varnish_cache_size}'/g' varnish.txt  > varnish
+
 echo "moving apc.ini"
 mv -f apc.ini /etc/php5/conf.d/apc.ini
 
@@ -54,12 +64,14 @@ mv -f my.cnf /etc/mysql/my.cnf
 
 echo "moving varnish"
 mv -f default.vcl /etc/varnish/default.vcl
+mv -f varnish /etc/default/varnish
+
+
 
 echo "restarting services"
 /etc/init.d/nginx start
 /etc/init.d/mysql restart
 /etc/init.d/php5-fpm restart
-pkill varnishd
-varnishd -f /etc/varnish/default.vcl -s file,7G -T 127.0.0.1:2000
+/etc/init.d/varnish restart
 
 echo "LEMPER script finished"
