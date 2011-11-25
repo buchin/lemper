@@ -7,12 +7,16 @@ apt-get update
 echo "adding dotdeb repo"
 echo "deb http://packages.dotdeb.org stable all" >> /etc/apt/sources.list
 echo "deb-src http://packages.dotdeb.org stable all" >> /etc/apt/sources.list
-echo "getting gpg key"
+echo "getting gpg keys"
 wget http://www.dotdeb.org/dotdeb.gpg
 cat dotdeb.gpg | apt-key add -
+
+curl http://repo.varnish-cache.org/debian/GPG-key.txt | apt-key add -
+echo "deb http://repo.varnish-cache.org/debian/ $(lsb_release -s -c) varnish-3.0" >> /etc/apt/sources.list.d/varnish.list 
+
 apt-get update
 
-echo "Install Nginx, PHP-FPM, MySQL, APC"
+echo "Install Nginx, PHP-FPM, MySQL, APC, zip, unzip, varnish"
 apt-get install nginx-full php5-fpm php5 mysql-server php5-apc php5-mysql php5-xsl php5-xmlrpc php5-sqlite php5-snmp php5-curl zip unzip varnish
 
 echo "calculating apc settings value"
