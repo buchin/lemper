@@ -47,6 +47,9 @@ sub vcl_recv {
 	}
 
 	# --- Wordpress specific configuration
+	if (req.url ~ "/wp-(login|admin)") {
+	return (pass);
+	}
 	
 	# Did not cache the admin and login pages
 	if ( !( req.url ~ "/wp-(login|admin)") ) {
