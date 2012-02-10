@@ -11,7 +11,7 @@ read varnish_cache_size
 read ram
 echo "updating apt source"
 apt-get update
-apt-get install lsb-release
+apt-get install lsb-release perl
 echo "adding dotdeb repo"
 echo "deb http://packages.dotdeb.org stable all" >> /etc/apt/sources.list
 echo "deb-src http://packages.dotdeb.org stable all" >> /etc/apt/sources.list
