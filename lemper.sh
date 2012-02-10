@@ -5,7 +5,7 @@ read ram
 echo "where do you want varnish to store its cache (malloc or file)?"
 read varnish_cache_location
 
-echo "please specify varnish cache size (1G, etc)?"
+echo "please specify varnish cache size (1G, 50%, etc)?"
 read varnish_cache_size
 
 read ram
