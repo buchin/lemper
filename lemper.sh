@@ -8,7 +8,6 @@ read varnish_cache_location
 echo 'please specify varnish cache size (1G, 50%, etc)?'
 read varnish_cache_size
 
-read ram
 echo "updating apt source"
 apt-get update
 apt-get install lsb-release perl
