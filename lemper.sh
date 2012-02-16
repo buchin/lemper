@@ -71,7 +71,7 @@ mv -f varnish /etc/default/varnish
 
 
 echo "restarting services"
-/etc/init.d/nginx start
+/etc/init.d/nginx restart
 /etc/init.d/mysql restart
 /etc/init.d/php5-fpm restart
 /etc/init.d/varnish restart
