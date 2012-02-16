@@ -46,6 +46,8 @@ mv -f apc.ini /etc/php5/conf.d/apc.ini
 echo "moving nginx.conf"
 cp nginx.conf.txt nginx.conf
 mv -f nginx.conf /etc/nginx/nginx.conf
+rm /etc/nginx/sites-enabled/default
+rm /etc/nginx/sites-available/default
 
 
 echo "appending mysql extension to php.ini"
